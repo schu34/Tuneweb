@@ -4,6 +4,8 @@ var nodes = [];
 
 var graph = new Springy.Graph();
 
+var numReasults = 5 //number of reasults 
+
 $("#my_canvas").springy({
     graph: graph
 });
@@ -66,9 +68,14 @@ var testData = {
 
 
 var explore = function() {
-    artist = $("#artist").val();
+    artist = $(".artist").val();
     if (artist.length > 0)
         fetchRelated(artist);
+    else {
+        artist = $(".center .artist").val();
+        if (artist.length > 0)
+            fetchRelated(artist);
+    }
 };
 
 
@@ -80,7 +87,7 @@ var fetchRelated = function(artist) {
     url = "http://developer.echonest.com/api/v4/artist/similar";
     args = {
         format: "json",
-        results: 20,
+        results: numReasults,
         name: artist,
         api_key: apikey
     };
@@ -88,7 +95,12 @@ var fetchRelated = function(artist) {
     //perform the query
 
     $.getJSON(url, args, function(json, textStatus) {
-        console.log(json);
+        $(".center").slideUp("slow");
+        $("#my_canvas").slideDown("slow");
+        $("html, body").animate({
+            scrollTop: $('#my_canvas').offset().top
+        }, "slow")
+        updateGraph(artist, json);
     });
 };
 
@@ -121,10 +133,10 @@ var updateGraph = function(artist, data) {
 
 
 $(document).ready(function($) {
-    $("#explore").on("click", explore);
+    $("#my_canvas").hide();
+    $("button").on("click", explore);
 
 
 
 
-    updateGraph("radiohead", testData);
 });
