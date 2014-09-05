@@ -1,10 +1,10 @@
-var apikey = "909HQJYZBYPA4XWIV";
+var nodes = [];//array of all the nodes on the graph
 
-var nodes = [];
+var graph = new Springy.Graph();//graph init
 
-var graph = new Springy.Graph();
+var numReasults = 5; //number of reasults
 
-var numReasults = 5; //number of reasults 
+//attach the graph to the canvas element in the html page
 
 $("#my_canvas").springy({
     graph: graph
@@ -12,45 +12,29 @@ $("#my_canvas").springy({
 
 
 
-
+//gets called each time there is a search
 var explore = function() {
-    artist = $(".artist").val();
-    if (artist.length > 0)
-        fetchRelated(artist);
+    var query = {};
+    query.artist =$(".artist").val();
+    if (query.artist.length > 0)
+        fetchRelated(query);
     else {
-        artist = $(".center .artist").val();
-        if (artist.length > 0)
-            fetchRelated(artist);
+        query.artist = $(".center .artist").val();
+        if (query.artist.length > 0)
+            fetchRelated(query);
     }
 };
 
-
-var fetchRelated = function(artist) {
-    console.log("fetching related artists" + artist);
-
-    //save paramaters for the query to echonest
-
-    url = "http://developer.echonest.com/api/v4/artist/similar";
-    args = {
-        format: "json",
-        results: numReasults,
-        name: artist,
-        api_key: apikey
-    };
-
-    //perform the query
-
-    $.getJSON(url, args, function(json, textStatus) {
-        $(".center").fadeOut("slow");
-        $(".top_search").fadeIn("slow");
-        $("#my_canvas").fadeIn("slow");
-        $("html, body").animate({
-            scrollTop: $('#my_canvas').offset().top
-        }, "slow");
-        updateGraph(artist, json);
-    });
+//send a request to the server
+var fetchRelated = function(query){
+	$.post('/artist', query , function(data) {
+		console.log("artist query sent");
+    console.log(JSON.parse(data));
+	});
 };
 
+
+//updates the graph
 var updateGraph = function(artist, data) {
 
     var nodeLabels = nodes.map(function(node) {
@@ -78,13 +62,9 @@ var updateGraph = function(artist, data) {
     }
 };
 
-
-$(document).ready(function($) {
+//get everything ready when the page loads
+$(document).ready(function() {
     $("#my_canvas").hide();
     $(".top_search").hide();
     $("button").on("click", explore);
-
-
-
-
 });
