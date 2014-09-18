@@ -28,15 +28,16 @@ var explore = function() {
 //send a request to the server
 var fetchRelated = function(query){
 	$.post('/artist', query , function(data) {
-		console.log("artist query sent");
-    console.log(JSON.parse(data));
+    updateGraph(query.artist, JSON.parse(data));
+    $(".center").fadeOut('slow');
+    $("#my_canvas").fadeIn('slow');
 	});
 };
 
 
 //updates the graph
 var updateGraph = function(artist, data) {
-
+    console.log("data: " + data);
     var nodeLabels = nodes.map(function(node) {
         return node.label;
     });
