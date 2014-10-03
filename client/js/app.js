@@ -14,6 +14,7 @@ $("#my_canvas").springy({
 
 //gets called each time there is a search
 var explore = function() {
+    clearGraph();
     var query = {};
     query.artist =$(".artist").val();
     if (query.artist.length > 0)
@@ -29,8 +30,7 @@ var explore = function() {
 var fetchRelated = function(query){
 	$.post('/artist', query , function(data) {
     updateGraph(query.artist, JSON.parse(data));
-    $(".center").fadeOut('slow');
-    $("#my_canvas").fadeIn('slow');
+    transition();
 	});
 };
 
@@ -42,11 +42,14 @@ var updateGraph = function(artist, data) {
         return node.label;
     });
 
-    if (nodeLabels.indexOf(artist) === -1) {
+    nodeIndex = nodeLabels.indexOf(artist);
+    if (nodeIndex === -1) {
         centerNode = graph.newNode({
             label: artist
         });
-        nodes.push(newNode);
+        nodes.push(centerNode);
+    } else {
+        centerNode = nodes[nodeIndex];
     }
 
     var artistObjects = data.response.artists;
@@ -62,6 +65,30 @@ var updateGraph = function(artist, data) {
         nodes.push(newNode);
     }
 };
+
+var clearGraph = function(){
+    graph.filterEdges(function(){return false;});
+    graph.filterNodes(function(){return false;});
+    nodes = [];
+};
+
+var transition = function(){
+    $(".center").fadeOut('slow');
+
+    $("#my_canvas").fadeIn('slow');
+
+    $('html, body').animate({
+        scrollTop: $("#my_canvas").offset().top
+    }, 500);
+
+    $(".top_search").fadeIn('slow');
+};
+
+/*Springy.Node.data.onDoubleClick = function(){
+    artist = this.label;
+    query  = {artist:artist};
+    fetchRelated(query);
+};*/
 
 //get everything ready when the page loads
 $(document).ready(function() {

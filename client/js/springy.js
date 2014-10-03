@@ -55,7 +55,12 @@
 	var Node = Springy.Node = function(id, data) {
 		this.id = id;
 		this.data = (data !== undefined) ? data : {};
-
+		this.data.ondoubleclick = function(){
+			console.log("doubleclick detected");
+			var artist = this.label;
+			var query  = {artist:artist};
+			fetchRelated(query);
+		};
 	// Data fields used by layout algorithm in this file:
 	// this.data.mass
 	// Data used by default renderer in springyui.js
@@ -189,13 +194,12 @@
 			this.addNodes.apply(this, json['nodes']);
 			this.addEdges.apply(this, json['edges']);
 		}
-	}
+	};
 
 
 	// find the edges from node1 to node2
 	Graph.prototype.getEdges = function(node1, node2) {
-		if (node1.id in this.adjacency
-			&& node2.id in this.adjacency[node1.id]) {
+		if (node1.id in this.adjacency && node2.id in this.adjacency[node1.id]) {
 			return this.adjacency[node1.id][node2.id];
 		}
 
@@ -330,7 +334,7 @@
 		this.stiffness = stiffness; // spring stiffness constant
 		this.repulsion = repulsion; // repulsion constant
 		this.damping = damping; // velocity damping factor
-		this.minEnergyThreshold = minEnergyThreshold || 0.01; //threshold used to determine render stop 
+		this.minEnergyThreshold = minEnergyThreshold || 0.01; //threshold used to determine render stop
 
 		this.nodePoints = {}; // keep track of points associated with nodes
 		this.edgeSprings = {}; // keep track of springs associated with edges
