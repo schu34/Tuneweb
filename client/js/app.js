@@ -84,11 +84,7 @@ var transition = function(){
     $(".top_search").fadeIn('slow');
 };
 
-/*Springy.Node.data.onDoubleClick = function(){
-    artist = this.label;
-    query  = {artist:artist};
-    fetchRelated(query);
-};*/
+
 
 //get everything ready when the page loads
 $(document).ready(function() {
