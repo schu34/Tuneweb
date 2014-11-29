@@ -26,7 +26,7 @@ var explore = function() {
     }
 };
 
-//send a request to the server
+//request related artists from the server
 var fetchRelated = function(query){
 	$.post('/artist', query , function(data) {
     updateGraph(query.artist, JSON.parse(data));
@@ -39,7 +39,8 @@ var fetchRelated = function(query){
 var updateGraph = function(artist, data) {
     console.log("data: " + data);
     var nodeLabels = nodes.map(function(node) {
-        return node.label;
+        console.log(node);
+        return node.data.label;
     });
 
     nodeIndex = nodeLabels.indexOf(artist);
@@ -57,21 +58,34 @@ var updateGraph = function(artist, data) {
         return obj.name;
     });
 
+    var newRelatedArtistFound = false;
     for (var i = 0; i < artists.length; i++) {
-        var newNode = graph.newNode({
-            label: artists[i]
-        });
-        graph.newEdge(newNode, centerNode);
-        nodes.push(newNode);
+        if(nodeLabels.indexOf(artists[i]) === -1){
+            var newNode = graph.newNode({
+                label: artists[i]
+            });
+            graph.newEdge(newNode, centerNode);
+            nodes.push(newNode);
+            newRelatedArtistFound = true;
+        }else{
+
+        }
+    }
+    if(!newRelatedArtistFound){
+        alert("all artists related to " + artist +  " are already being displayed");
     }
 };
 
+
+//clears the graph on the screen and resets the nodes array to []
 var clearGraph = function(){
     graph.filterEdges(function(){return false;});
     graph.filterNodes(function(){return false;});
     nodes = [];
 };
 
+
+//transition from showing the search box to showing the canvas with the graph
 var transition = function(){
     $(".center").fadeOut('slow');
 

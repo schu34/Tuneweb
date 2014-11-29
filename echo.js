@@ -12,11 +12,14 @@ echo.getRelatedArtists = function(artist, results, callback){
     //add format and number of results
     url += ("&format=json&results=" + results);
     var related = "it didn't work";
+
+
     //make the request to echonest api
     request(url, function(error, response, body){
       if(error){
-        console.log("ERROR" + error);
+        console.log("ERROR:" + error);
       } else {
+          console.log(body);
           callback(body);
           related = body;
       }
