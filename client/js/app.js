@@ -102,7 +102,15 @@ var transition = function(){
 
 //get everything ready when the page loads
 $(document).ready(function() {
+    //hide all the stuff that's not shown on page load
     $("#my_canvas").hide();
     $(".top_search").hide();
     $("button").on("click", explore);
+
+    //set up enter key listener
+    $("input").keypress(function(e){
+        if(e.which === 13){
+            explore();
+        }
+    });
 });
