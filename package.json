@@ -1,0 +1,22 @@
+{
+  "name": "tuneweb",
+  "version": "0.0.1",
+  "description": "discover new music",
+  "main": "server.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schu34/Tuneweb.git"
+  },
+  "author": "Matthew Schupack",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/schu34/Tuneweb/issues"
+  },
+  "homepage": "https://github.com/schu34/Tuneweb#readme"
+}
