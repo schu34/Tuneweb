@@ -6,11 +6,13 @@ var app = express();
 //so we can parse requests from client
 var bodyParser = require('body-parser');
 
-//module for querying echonest
-var echo = require('./echo');
+//module for querying lastfm
+var LastFmNode = require('lastfm').LastFmNode;
 
-//for making requests
-var request = require('request');
+var lastfm = new LastFmNode({
+  api_key: '***REMOVED***',    // sign-up for a key at http://www.last.fm/api
+  secret: '***REMOVED***',
+});
 
 //use the client directory by default
 app.use(express.static(__dirname + "/client"));
@@ -22,11 +24,22 @@ http.createServer(app).listen(3000);
 //set up the /artist path
 app.post("/artist", function(req, res) {
     var artist = req.body.artist;
+    console.log("artist: " + artist);
+    lastfm.request("artist.getSimilar", {
+      artist: artist,
+      limit: 5,
+      handlers: {
+        success: function(data){
+          console.log(JSON.stringify(data));
+          artists = data.similarartists.artist
+          res.send(artists);
 
-    echo.getRelatedArtists(artist, 5, function(r){
-      //send reasults back to client
-      res.send(r);
-    });
+        },
+        error: function(error){
+          console.log(error);
+        }
+      }
+    })
 });
 
 console.log("server listeining on port 3000");

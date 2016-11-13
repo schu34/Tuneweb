@@ -10,26 +10,20 @@ $("#my_canvas").springy({
     graph: graph
 });
 
-
-
 //gets called each time there is a search
 var explore = function() {
     clearGraph();
     var query = {};
-    query.artist =$(".artist").val();
+    query.artist =$(".artist").val() || $(".center .artist").val();
+
     if (query.artist.length > 0)
         fetchRelated(query);
-    else {
-        query.artist = $(".center .artist").val();
-        if (query.artist.length > 0)
-            fetchRelated(query);
-    }
 };
 
 //request related artists from the server
 var fetchRelated = function(query){
 	$.post('/artist', query , function(data) {
-    updateGraph(query.artist, JSON.parse(data));
+    updateGraph(query.artist, data);
     transition();
 	});
 };
@@ -53,14 +47,15 @@ var updateGraph = function(artist, data) {
         centerNode = nodes[nodeIndex];
     }
 
-    var artistObjects = data.response.artists;
+    var artistObjects = data;
     var artists = artistObjects.map(function(obj) {
         return obj.name;
     });
 
     var newRelatedArtistFound = false;
     for (var i = 0; i < artists.length; i++) {
-        if(nodeLabels.indexOf(artists[i]) === -1){
+        idx = nodeLabels.indexOf(artists[i])
+        if(idx === -1){
             var newNode = graph.newNode({
                 label: artists[i]
             });
@@ -68,7 +63,7 @@ var updateGraph = function(artist, data) {
             nodes.push(newNode);
             newRelatedArtistFound = true;
         }else{
-
+          graph.newEdge(nodes[i], nodes[idx]);
         }
     }
     if(!newRelatedArtistFound){
