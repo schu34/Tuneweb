@@ -10,11 +10,20 @@ $("#my_canvas").springy({
     graph: graph
 });
 
+function titleCase(str){
+  words = str.split(" ");
+  for (var i = 0; i < words.length; i++) {
+    words[i][0] = words[i][0].toUpperCase();
+  }
+  return words.join(" ");
+}
+
 //gets called each time there is a search
 var explore = function() {
     clearGraph();
     var query = {};
-    query.artist =$(".artist").val() || $(".center .artist").val();
+    query.artist = $(".artist").val() || $(".center .artist").val();
+    query.artist = titleCase(query.artist);
 
     if (query.artist.length > 0)
         fetchRelated(query);
@@ -63,7 +72,7 @@ var updateGraph = function(artist, data) {
             nodes.push(newNode);
             newRelatedArtistFound = true;
         }else{
-          graph.newEdge(nodes[i], nodes[idx]);
+          graph.newEdge(centerNode, nodes[idx]);
         }
     }
     if(!newRelatedArtistFound){
