@@ -23,19 +23,8 @@ button {
 }
 
 
-#my_canvas {
-	height: 100vh;
-	width: 66wh;
-    /*position: absolute;*/
-    display: block;
-    margin: auto;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-}
 
-#canvas-container{
+#svg-container{
     width:66wh;
     float: left;
 }
@@ -52,7 +41,7 @@ button {
     position:absolute;
     bottom:0;
     width:100%;
-    height:30px;   /* Height of the footer */
+    height:30px;
     margin: auto;
 }
 

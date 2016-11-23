@@ -1,22 +1,15 @@
-var nodes = [];//array of all the nodes on the graph
+var numResults = 5; //number of results this needs to be user setable
 
-var graph = new Springy.Graph();//graph init
+var width, height;
 
-var numReasults = 5; //number of reasults
 
-//attach the graph to the canvas element in the html page
+var force;
 
-$("#my_canvas").springy({
-    graph: graph
-});
+var graph = {
+    nodes: {},
+    links: {}
+};
 
-function titleCase(str){
-  words = str.split(" ");
-  for (var i = 0; i < words.length; i++) {
-    words[i][0] = words[i][0].toUpperCase();
-  }
-  return words.join(" ");
-}
 
 //gets called each time there is a search
 var explore = function() {
@@ -24,73 +17,57 @@ var explore = function() {
     var query = {};
     query.artist = $(".artist").val() || $(".center .artist").val();
     query.artist = titleCase(query.artist);
+    $(".artist").val() = "";
+    $(".center .artist").val = "";
 
     if (query.artist.length > 0)
-        fetchRelated(query);
+        fetchRelated(query, function(artists) {
+            updateGraph(query.artist, data);
+            transition();
+        });
 };
-
 //request related artists from the server
-var fetchRelated = function(query){
-	$.post('/artist', query , function(data) {
-    updateGraph(query.artist, data);
-    transition();
-	});
+var fetchRelated = function(query, callback) {
+    $.post('/artist', query, function(data) {
+        callback(data);
+    });
 };
 
 
 //updates the graph
 var updateGraph = function(artist, data) {
     console.log("data: " + data);
-    var nodeLabels = nodes.map(function(node) {
-        console.log(node);
-        return node.data.label;
-    });
+    newNodes = data.map(function(a) {
+        return {
+            id: a.name
+        };
+    })
 
-    nodeIndex = nodeLabels.indexOf(artist);
-    if (nodeIndex === -1) {
-        centerNode = graph.newNode({
-            label: artist
+    for (var i = 0; i < newNodes.length; i++) {
+        graph.links.append({
+            source: artist,
+            target: newNodes.id(),
+            value: 10
         });
-        nodes.push(centerNode);
-    } else {
-        centerNode = nodes[nodeIndex];
     }
 
-    var artistObjects = data;
-    var artists = artistObjects.map(function(obj) {
-        return obj.name;
-    });
-
-    var newRelatedArtistFound = false;
-    for (var i = 0; i < artists.length; i++) {
-        idx = nodeLabels.indexOf(artists[i])
-        if(idx === -1){
-            var newNode = graph.newNode({
-                label: artists[i]
-            });
-            graph.newEdge(newNode, centerNode);
-            nodes.push(newNode);
-            newRelatedArtistFound = true;
-        }else{
-          graph.newEdge(centerNode, nodes[idx]);
-        }
-    }
-    if(!newRelatedArtistFound){
-        alert("all artists related to " + artist +  " are already being displayed");
-    }
 };
 
 
 //clears the graph on the screen and resets the nodes array to []
-var clearGraph = function(){
-    graph.filterEdges(function(){return false;});
-    graph.filterNodes(function(){return false;});
+var clearGraph = function() {
+    graph.filterEdges(function() {
+        return false;
+    });
+    graph.filterNodes(function() {
+        return false;
+    });
     nodes = [];
 };
 
 
 //transition from showing the search box to showing the canvas with the graph
-var transition = function(){
+var transition = function() {
     $(".center").fadeOut('slow');
 
     $("#my_canvas").fadeIn('slow');
@@ -107,14 +84,26 @@ var transition = function(){
 //get everything ready when the page loads
 $(document).ready(function() {
     //hide all the stuff that's not shown on page load
-    $("#my_canvas").hide();
+    $("svg").hide();
     $(".top_search").hide();
     $("button").on("click", explore);
 
     //set up enter key listener
-    $("input").keypress(function(e){
-        if(e.which === 13){
+    $("input").keypress(function(e) {
+        if (e.which === 13) {
             explore();
         }
     });
+    width = $(window).width;
+    height = $(window).height;
+
+    svg = d3.select("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    force = d3.layout.force()
+        .charge(-120)
+        .linkDistance(100)
+        .size([width, height]);
+
 });
