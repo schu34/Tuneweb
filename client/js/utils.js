@@ -1,6 +1,4 @@
-
-
-module.exports = {
+utils = {
   titleCase: function(str) {
       words = str.split(" ");
 
@@ -9,3 +7,6 @@ module.exports = {
       }).join(" ");
   }
 }
+
+
+module.exports = utils;

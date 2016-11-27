@@ -3,12 +3,13 @@ var numResults = 5; //number of results this needs to be user setable
 var width, height;
 
 
-var force;
+var simulation;
 
 var graph = {
-    nodes: {},
-    links: {}
+    nodes: [],
+    links: []
 };
+
 
 
 //gets called each time there is a search
@@ -16,13 +17,13 @@ var explore = function() {
     clearGraph();
     var query = {};
     query.artist = $(".artist").val() || $(".center .artist").val();
-    query.artist = titleCase(query.artist);
-    $(".artist").val() = "";
-    $(".center .artist").val = "";
+    query.artist = utils.titleCase(query.artist);
+    $(".artist").val("");
+    $(".center .artist").val("");
 
     if (query.artist.length > 0)
         fetchRelated(query, function(artists) {
-            updateGraph(query.artist, data);
+            updateGraph(query.artist, artists);
             transition();
         });
 };
@@ -36,33 +37,99 @@ var fetchRelated = function(query, callback) {
 
 //updates the graph
 var updateGraph = function(artist, data) {
+  graph.nodes.push({id: artist});
     console.log("data: " + data);
     newNodes = data.map(function(a) {
         return {
-            id: a.name
+            id: a.name,
+            group: 1
         };
     })
 
     for (var i = 0; i < newNodes.length; i++) {
-        graph.links.append({
-            source: artist,
-            target: newNodes.id(),
-            value: 10
-        });
+        artistIdx = graph.nodes.indexOf(newNodes[i]);
+        if (artistIdx !== -1) {
+            graph.links.push({
+                source: artist,
+                target: graph.nodes[artistIdx].id,
+                value: 50
+            })
+            newNodes.splice(i, 1);
+        }
     }
 
+    for (var i = 0; i < newNodes.length; i++) {
+        graph.links.push({
+            source: artist,
+            target: newNodes[i].id,
+            value: 500
+        });
+    }
+    graph.nodes = graph.nodes.concat(newNodes);
+
+    var link = d3.select("#links")
+        .selectAll("line")
+        .data(graph.links)
+        .enter().append("line")
+        .attr("stroke-Width", function(d) {
+            return Math.sqrt(d.value);
+        });
+
+    var node = d3.select("#nodes")
+        .selectAll("circle")
+        .data(graph.nodes)
+        .enter().append("circle")
+        .attr("r", 10)
+        .call(d3.drag()
+            .on("start", dragStarted)
+            .on("drag", dragged)
+            .on("end", dragEnded));
+
+    node.append("title").text(function(d) {
+        return d.id;
+    });
+
+    simulation
+        .nodes(graph.nodes)
+        .on("tick", ticked);
+
+    simulation
+        .force("link")
+        .links(graph.links);
+
+  function ticked() {
+    link
+      .attr("x1", function(d){return d.source.x;})
+      .attr("y1", function(d){return d.source.y;})
+      .attr("x2", function(d){return d.target.x;})
+      .attr("y2", function(d){return d.target.y;});
+
+    node
+      .attr("cx", function(d){return d.x})
+      .attr("cy", function(d){return d.y});
+  }
 };
 
+function dragStarted(d){
+  if(!d3.event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x;
+  d.dy = d.y;
+}
+
+function dragged(d){
+  d.fx = d3.event.x;
+  d.fy = d3.event.y;
+}
+
+function dragEnded(d){
+  if(!d3.event.active) simulation.alphaTarget(0);
+  d.fx = null;
+  d.fy = null;
+}
 
 //clears the graph on the screen and resets the nodes array to []
 var clearGraph = function() {
-    graph.filterEdges(function() {
-        return false;
-    });
-    graph.filterNodes(function() {
-        return false;
-    });
-    nodes = [];
+
 };
 
 
@@ -70,13 +137,13 @@ var clearGraph = function() {
 var transition = function() {
     $(".center").fadeOut('slow');
 
-    $("#my_canvas").fadeIn('slow');
+    $("svg").fadeIn('slow');
 
     $('html, body').animate({
-        scrollTop: $("#my_canvas").offset().top
+        scrollTop: $("#svg-container").offset().top
     }, 500);
 
-    $(".top_search").fadeIn('slow');
+    $(".top-search").fadeIn('slow');
 };
 
 
@@ -85,7 +152,7 @@ var transition = function() {
 $(document).ready(function() {
     //hide all the stuff that's not shown on page load
     $("svg").hide();
-    $(".top_search").hide();
+    $(".top-search").hide();
     $("button").on("click", explore);
 
     //set up enter key listener
@@ -94,16 +161,18 @@ $(document).ready(function() {
             explore();
         }
     });
-    width = $(window).width;
-    height = $(window).height;
+
+
 
     svg = d3.select("svg")
-        .attr("width", width)
-        .attr("height", height);
+    width = +svg.attr("width");
+    height = +svg.attr("height");
 
-    force = d3.layout.force()
-        .charge(-120)
-        .linkDistance(100)
-        .size([width, height]);
+    simulation = d3.forceSimulation()
+        .force("link", d3.forceLink().id(function(d) {
+            return d.id
+        }))
+        .force("charge", d3.forceManyBody())
+        // .force("center", d3.forceCenter(width / 2, height / 2))
 
 });
