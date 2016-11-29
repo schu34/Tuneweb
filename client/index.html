@@ -19,11 +19,11 @@
                 </li>
             </ul>
             <ul class="top-search pure-form">
-            	<li>
+                <li>
                     <input type="text" class="artist" placeholder="Artist">
                 </li>
                 <li>
-                	<button class="explore">EXPLORE</button>
+                    <button class="explore">EXPLORE</button>
                 </li>
             </ul>
         </div>
@@ -32,19 +32,21 @@
 
     <!--begin center searchbar -->
     <div class="center">
-    	<div>
-        <input type="text" class="artist" placeholder="Enter the name of a band or artist">
-        <div class="button-center">
-            <button class="explore">EXPLORE</button>
-        </div>
+        <div>
+            <input type="text" class="artist" placeholder="Enter the name of a band or artist">
+            <div class="button-center">
+                <button class="explore">EXPLORE</button>
+            </div>
         </div>
     </div>
     <!--end center searchbar -->
 
     <div id="svg-container">
-      <svg width = "600" height="600">
-        <g id="links"></g>
-        <g id="nodes"></g>
+        <svg width="600" height="600">
+            <g class="container">
+                <g id="links"></g>
+                <g id="nodes"></g>
+            </g>
       </svg>
     </div>
 
@@ -58,12 +60,10 @@
 
     <!--load scripts last so that the page loads faster -->
     <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.1.1.min.js"
-      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-      crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous">
     </script>
     <script src="js/utils.js" charset="utf-8"></script>
+    <script src="js/graph.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/app.js"></script>
 </body>
 
