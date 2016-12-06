@@ -18,34 +18,21 @@ var graph = {
 
         this.simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) {
-                return d.id
-            }))
-            .force("charge", d3.forceManyBody())
+                return d.id;
+            }).distance(300))
+            .force("charge", d3.forceManyBody().strength(-1000))
             .force("center", d3.forceCenter(this.centerX, this.centerY))
         this.zoom = d3.zoom().on("zoom", this.zoomed);
         this.svg.call(this.zoom)
 
     },
-    nodeDragStarted: function(d){
-        if (!d3.event.active) graph.simulation.alphaTarget(0.3).restart();
-        d.fx = d.x;
-        d.dy = d.y;
-    },
-    nodeDragged: function(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-    },
-    nodeDragEnded: function(d){
-        if (!d3.event.active) graph.simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-    },
-
 
     zoomed: function(){
         d3.select(".container").attr("transform", "translate("+ d3.event.transform.x + "," + d3.event.transform.y + ")scale(" + d3.event.transform.k + ")");
     },
-    clear: function(){},
+    clear: function(){
+
+    },
     update: function(artist, data) {
         this.updateModel(artist, data);
         this.updateView();
@@ -99,10 +86,6 @@ var graph = {
             .data(this.nodes)
             .enter().append("text")
             .text(function(d){return d.id;})
-            .call(d3.drag()
-                .on("start", this.nodeDragStarted)
-                .on("drag", this.nodeDragged)
-                .on("end", this.nodeDragEnded));
 
         node.append("title").text(function(d) {
             return d.id;
