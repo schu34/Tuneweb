@@ -1,6 +1,8 @@
 body {
     padding: 30px;
+    font-family: sans-serif;
 }
+
 
 .center {
     position: absolute;
@@ -44,8 +46,29 @@ svg{
     float: left;
 }
 
+ul{
+    list-style-type: none;
+}
+
+li{
+    display: inline;
+}
+
+.main-title{
+    font-size: 3em;
+
+}
+
 .nav{
 	border-bottom: 2px solid black;
+}
+
+.nav a{
+    text-decoration: none;
+
+}
+.nav a:visited{
+    color: inherit;
 }
 
 .top-search{

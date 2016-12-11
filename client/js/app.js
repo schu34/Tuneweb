@@ -42,6 +42,10 @@ var transition = function() {
 $(document).ready(function() {
     //hide all the stuff that's not shown on page load
     $("svg").hide();
+    $("svg").attr("width", $("body").width());
+    $("svg").attr("height", $(window).height());
+    $(".artist").focus();
+
     $(".top-search").hide();
     $("button").on("click", explore);
 
