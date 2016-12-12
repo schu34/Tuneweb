@@ -56,4 +56,4 @@ node_modules
 
 #files just for me
 todo.txt
-apiKeys.json
+keys.json
