@@ -2,7 +2,7 @@ var numResults = 5; //number of results this needs to be user setable
 
 //gets called each time there is a search
 var explore = function() {
-    graph.clear();
+    GraphView.clear();
     var query = {};
     query.artist = $(".artist").val() || $(".center .artist").val();
     query.artist = utils.titleCase(query.artist);
@@ -10,8 +10,11 @@ var explore = function() {
     $(".center .artist").val("");
 
     if (query.artist.length > 0)
-        fetchRelated(query, function(artists) {
-            graph.update(query.artist, artists);
+        fetchRelated(query, function(graph) {
+            console.log(graph);
+            // graph.update(query.artist, artists);
+            GraphView.newData(graph);
+            // GraphView.updateView();
             transition();
         });
 };
@@ -56,5 +59,5 @@ $(document).ready(function() {
         }
     });
 
-    graph.init();
+    GraphView.init();
 });

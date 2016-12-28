@@ -1,4 +1,4 @@
-var graph = {
+var GraphView = {
     nodes: [],
     links: [],
     svg: null,
@@ -8,7 +8,11 @@ var graph = {
     height: 0,
     centerX: 0,
     centerY: 0,
-
+    newData: function(graph){
+        this.nodes = graph.nodes;
+        this.links = graph.links;
+        this.updateView();
+    },
     init: function(){
         this.svg = d3.select("svg")
         this.width = +this.svg.attr("width");
@@ -19,7 +23,7 @@ var graph = {
         this.simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) {
                 return d.id;
-            }).distance(300))
+            }).distance(100))
             .force("charge", d3.forceManyBody().strength(-1000))
             .force("center", d3.forceCenter(this.centerX, this.centerY))
         this.zoom = d3.zoom().on("zoom", this.zoomed);
@@ -36,40 +40,6 @@ var graph = {
     update: function(artist, data) {
         this.updateModel(artist, data);
         this.updateView();
-    },
-
-    updateModel: function(artist, data) {
-        this.nodes.push({
-            id: artist
-        });
-        console.log("data: " + data);
-        newNodes = data.map(function(a) {
-            return {
-                id: a.name,
-                group: 1
-            };
-        })
-
-        for (var i = 0; i < newNodes.length; i++) {
-            artistIdx = this.nodes.indexOf(newNodes[i]);
-            if (artistIdx !== -1) {
-                this.links.push({
-                    source: artist,
-                    target: this.nodes[artistIdx].id,
-                    value: 50
-                })
-                newNodes.splice(i, 1);
-            }
-        }
-
-        for (var i = 0; i < newNodes.length; i++) {
-            this.links.push({
-                source: artist,
-                target: newNodes[i].id,
-                value: 500
-            });
-        }
-        this.nodes = this.nodes.concat(newNodes);
     },
 
     updateView: function() {
@@ -100,11 +70,12 @@ var graph = {
             .force("link")
             .links(this.links);
 
-        this.simulation.restart();
+        this.simulation.restart().alpha(1);
 
         function ticked() {
+            console.log("tick");
             link
-                .attr("x1", function(d) {
+                .attr("x1", function(d){
                     return d.source.x;
                 })
                 .attr("y1", function(d) {
@@ -119,6 +90,7 @@ var graph = {
 
             node
                 .attr("x", function(d) {
+                    console.log(d);
                     return d.x
                 })
                 .attr("y", function(d) {
