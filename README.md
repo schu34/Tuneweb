@@ -1,17 +1,13 @@
 Tuneweb
 =======
-An app for discovering new music
-
-
-
-
-
+An app for discovering new music. Still very much a work in progress.
 
 
 keys.json
 =========
-In order to get related artists from lastfm you'll need an api key. You can grab one [here](http://www.last.fm/api/account/create) if you don't have one already.
-Then just create a file called keys.json in the root directory with the following format: 
+In order to get related artists from lastfm while developing you'll need an api key. 
+You can grab one [here](http://www.last.fm/api/account/create) if you don't have one already.
+Then just create a file called keys.json in the root directory with the following format:
 
 ```
 {
