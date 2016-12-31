@@ -21,6 +21,7 @@ var explore = function() {
 //request related artists from the server
 var fetchRelated = function(query, callback) {
     $.post('/artist', query, function(data) {
+        console.log(data);
         callback(data);
     });
 };
