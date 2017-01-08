@@ -1,0 +1,25 @@
+{
+    "val": "Yes",
+    "children": [{
+        "val": "Genesis",
+        "children": [],
+        "level": 1
+    }, {
+        "val": "Emerson, Lake & Palmer",
+        "children": [],
+        "level": 1
+    }, {
+        "val": "Anderson Bruford Wakeman Howe",
+        "children": [],
+        "level": 1
+    }, {
+        "val": "King Crimson",
+        "children": [],
+        "level": 1
+    }, {
+        "val": "Jon Anderson",
+        "children": [],
+        "level": 1
+    }],
+    "level": 0
+}
