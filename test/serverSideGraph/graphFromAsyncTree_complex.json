@@ -1,0 +1,316 @@
+{
+    "nodes": [{
+        "id": "Radiohead"
+    }, {
+        "id": "Thom Yorke"
+    }, {
+        "id": "Atoms for Peace"
+    }, {
+        "id": "Arcade Fire"
+    }, {
+        "id": "Muse"
+    }, {
+        "id": "Placebo"
+    }, {
+        "id": "Jonny Greenwood"
+    }, {
+        "id": "Philip Selway"
+    }, {
+        "id": "Burial & Four Tet & Thom Yorke"
+    }, {
+        "id": "Ultraísta"
+    }, {
+        "id": "The National"
+    }, {
+        "id": "Vampire Weekend"
+    }, {
+        "id": "The Strokes"
+    }, {
+        "id": "Will Butler"
+    }, {
+        "id": "Kasabian"
+    }, {
+        "id": "30 Seconds to Mars"
+    }, {
+        "id": "Franz Ferdinand"
+    }, {
+        "id": "IAMX"
+    }, {
+        "id": "Сплин"
+    }, {
+        "id": "Micachu"
+    }, {
+        "id": "Trent Reznor and Atticus Ross"
+    }, {
+        "id": "Jon Brion"
+    }, {
+        "id": "Paul Banks"
+    }, {
+        "id": "S. Carey"
+    }, {
+        "id": "Joseph Arthur"
+    }, {
+        "id": "Burial & Four Tet"
+    }, {
+        "id": "Massive Attack vs Burial"
+    }, {
+        "id": "Burial"
+    }, {
+        "id": "Blackdown"
+    }, {
+        "id": "Joe Goddard"
+    }, {
+        "id": "Labyrinth Ear"
+    }, {
+        "id": "Interpol"
+    }, {
+        "id": "Editors"
+    }, {
+        "id": "The Antlers"
+    }, {
+        "id": "The Shins"
+    }, {
+        "id": "Phoenix"
+    }, {
+        "id": "The Vaccines"
+    }, {
+        "id": "Julian Casablancas"
+    }, {
+        "id": "Albert Hammond, Jr."
+    }, {
+        "id": "Julian Casablancas + The Voidz"
+    }, {
+        "id": "Arctic Monkeys"
+    }, {
+        "id": "Cage the Elephant"
+    }, {
+        "id": "Tobias Jesso Jr."
+    }, {
+        "id": "EL VY"
+    }, {
+        "id": "Ezra Furman"
+    }, {
+        "id": "Miles Kane"
+    }, {
+        "id": "Kaiser Chiefs"
+    }, {
+        "id": "Oasis"
+    }, {
+        "id": "The Libertines"
+    }, {
+        "id": "Three Days Grace"
+    }, {
+        "id": "My Chemical Romance"
+    }, {
+        "id": "Linkin Park"
+    }, {
+        "id": "FFS"
+    }, {
+        "id": "The Killers"
+    }, {
+        "id": "Sneaker Pimps"
+    }, {
+        "id": "Chris Corner"
+    }, {
+        "id": "Robots in Disguise"
+    }, {
+        "id": "Hurts"
+    }, {
+        "id": "Александр Васильев"
+    }, {
+        "id": "Zемфира"
+    }, {
+        "id": "Би-2"
+    }, {
+        "id": "Lumen"
+    }, {
+        "id": "Смысловые галлюцинации"
+    }],
+    "links": [{
+        "source": "Radiohead",
+        "target": "Thom Yorke"
+    }, {
+        "source": "Radiohead",
+        "target": "Atoms for Peace"
+    }, {
+        "source": "Radiohead",
+        "target": "Arcade Fire"
+    }, {
+        "source": "Radiohead",
+        "target": "Muse"
+    }, {
+        "source": "Radiohead",
+        "target": "Placebo"
+    }, {
+        "source": "Thom Yorke",
+        "target": "Jonny Greenwood"
+    }, {
+        "source": "Thom Yorke",
+        "target": "Philip Selway"
+    }, {
+        "source": "Thom Yorke",
+        "target": "Burial & Four Tet & Thom Yorke"
+    }, {
+        "source": "Atoms for Peace",
+        "target": "Ultraísta"
+    }, {
+        "source": "Arcade Fire",
+        "target": "The National"
+    }, {
+        "source": "Arcade Fire",
+        "target": "Vampire Weekend"
+    }, {
+        "source": "Arcade Fire",
+        "target": "The Strokes"
+    }, {
+        "source": "Arcade Fire",
+        "target": "Will Butler"
+    }, {
+        "source": "Muse",
+        "target": "Kasabian"
+    }, {
+        "source": "Muse",
+        "target": "30 Seconds to Mars"
+    }, {
+        "source": "Muse",
+        "target": "Franz Ferdinand"
+    }, {
+        "source": "Placebo",
+        "target": "IAMX"
+    }, {
+        "source": "Placebo",
+        "target": "Сплин"
+    }, {
+        "source": "Jonny Greenwood",
+        "target": "Micachu"
+    }, {
+        "source": "Jonny Greenwood",
+        "target": "Trent Reznor and Atticus Ross"
+    }, {
+        "source": "Jonny Greenwood",
+        "target": "Jon Brion"
+    }, {
+        "source": "Philip Selway",
+        "target": "Paul Banks"
+    }, {
+        "source": "Philip Selway",
+        "target": "S. Carey"
+    }, {
+        "source": "Philip Selway",
+        "target": "Joseph Arthur"
+    }, {
+        "source": "Burial & Four Tet & Thom Yorke",
+        "target": "Burial & Four Tet"
+    }, {
+        "source": "Burial & Four Tet & Thom Yorke",
+        "target": "Massive Attack vs Burial"
+    }, {
+        "source": "Burial & Four Tet & Thom Yorke",
+        "target": "Burial"
+    }, {
+        "source": "Burial & Four Tet & Thom Yorke",
+        "target": "Blackdown"
+    }, {
+        "source": "Ultraísta",
+        "target": "Joe Goddard"
+    }, {
+        "source": "Ultraísta",
+        "target": "Labyrinth Ear"
+    }, {
+        "source": "The National",
+        "target": "Interpol"
+    }, {
+        "source": "The National",
+        "target": "Editors"
+    }, {
+        "source": "The National",
+        "target": "The Antlers"
+    }, {
+        "source": "Vampire Weekend",
+        "target": "The Shins"
+    }, {
+        "source": "Vampire Weekend",
+        "target": "Phoenix"
+    }, {
+        "source": "Vampire Weekend",
+        "target": "The Vaccines"
+    }, {
+        "source": "The Strokes",
+        "target": "Julian Casablancas"
+    }, {
+        "source": "The Strokes",
+        "target": "Albert Hammond, Jr."
+    }, {
+        "source": "The Strokes",
+        "target": "Julian Casablancas + The Voidz"
+    }, {
+        "source": "The Strokes",
+        "target": "Arctic Monkeys"
+    }, {
+        "source": "The Strokes",
+        "target": "Cage the Elephant"
+    }, {
+        "source": "Will Butler",
+        "target": "Tobias Jesso Jr."
+    }, {
+        "source": "Will Butler",
+        "target": "EL VY"
+    }, {
+        "source": "Will Butler",
+        "target": "Ezra Furman"
+    }, {
+        "source": "Kasabian",
+        "target": "Miles Kane"
+    }, {
+        "source": "Kasabian",
+        "target": "Kaiser Chiefs"
+    }, {
+        "source": "Kasabian",
+        "target": "Oasis"
+    }, {
+        "source": "Kasabian",
+        "target": "The Libertines"
+    }, {
+        "source": "30 Seconds to Mars",
+        "target": "Three Days Grace"
+    }, {
+        "source": "30 Seconds to Mars",
+        "target": "My Chemical Romance"
+    }, {
+        "source": "30 Seconds to Mars",
+        "target": "Linkin Park"
+    }, {
+        "source": "Franz Ferdinand",
+        "target": "FFS"
+    }, {
+        "source": "Franz Ferdinand",
+        "target": "The Killers"
+    }, {
+        "source": "IAMX",
+        "target": "Sneaker Pimps"
+    }, {
+        "source": "IAMX",
+        "target": "Chris Corner"
+    }, {
+        "source": "IAMX",
+        "target": "Robots in Disguise"
+    }, {
+        "source": "IAMX",
+        "target": "Hurts"
+    }, {
+        "source": "Сплин",
+        "target": "Александр Васильев"
+    }, {
+        "source": "Сплин",
+        "target": "Zемфира"
+    }, {
+        "source": "Сплин",
+        "target": "Би-2"
+    }, {
+        "source": "Сплин",
+        "target": "Lumen"
+    }, {
+        "source": "Сплин",
+        "target": "Смысловые галлюцинации"
+    }]
+}

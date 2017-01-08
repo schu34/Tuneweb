@@ -1,0 +1,31 @@
+{
+    "nodes": [{
+        "id": "Yes"
+    }, {
+        "id": "Genesis"
+    }, {
+        "id": "Emerson, Lake & Palmer"
+    }, {
+        "id": "Anderson Bruford Wakeman Howe"
+    }, {
+        "id": "King Crimson"
+    }, {
+        "id": "Jon Anderson"
+    }],
+    "links": [{
+        "source": "Yes",
+        "target": "Genesis"
+    }, {
+        "source": "Yes",
+        "target": "Emerson, Lake & Palmer"
+    }, {
+        "source": "Yes",
+        "target": "Anderson Bruford Wakeman Howe"
+    }, {
+        "source": "Yes",
+        "target": "King Crimson"
+    }, {
+        "source": "Yes",
+        "target": "Jon Anderson"
+    }]
+}
