@@ -23,8 +23,8 @@ var GraphView = {
         this.simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) {
                 return d.id;
-            }).distance(100))
-            .force("charge", d3.forceManyBody().strength(-1000))
+            }).distance(5))
+            .force("charge", d3.forceManyBody().strength(-3000))
             .force("center", d3.forceCenter(this.centerX, this.centerY))
         this.zoom = d3.zoom().on("zoom", this.zoomed);
         this.svg.call(this.zoom)
@@ -70,7 +70,7 @@ var GraphView = {
             .force("link")
             .links(this.links);
 
-        this.simulation.restart().alpha(1);
+        this.simulation.restart().alpha(1).alphaDecay(.005);
 
         function ticked() {
             console.log("tick");
