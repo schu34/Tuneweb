@@ -6,7 +6,6 @@ var jsonFile = require("jsonfile");
 var file = "keys.json";
 
 
-
 describe("AsyncTree", function(){
     var lastfm;
 
@@ -36,6 +35,8 @@ describe("AsyncTree", function(){
             var numTree = require("./AsyncTree/numTree.json");
             assert.deepEqual(tree.root, numTree);
         });
+        /******************************End Test********************************/
+
 
         function getChildren(num){
             return new Promise(function(resolve) {
@@ -53,6 +54,8 @@ describe("AsyncTree", function(){
             var artistTree = require("./AsyncTree/artistTree.json");
             assert.deepEqual(tree.root, artistTree);
         });
+        /******************************End Test********************************/
+
         function lastfmGetChildren(artist){
             return lastfm.requestPromise("artist.getSimilar",{
                 artist: artist,
@@ -71,6 +74,8 @@ describe("AsyncTree", function(){
             var bigNumTree = require('./AsyncTree/bigNumTree.json');
             assert.deepEqual(tree.root, bigNumTree);
         })
+        /******************************End Test********************************/
+
 
 
         function randGetChildren(num){
@@ -88,6 +93,8 @@ describe("AsyncTree", function(){
         return new AsyncTree(1, duplicateGetChildren, 3).init().then(function(tree){
             assert.deepEqual(tree.root, noDupTree);
         });
+        /******************************End Test********************************/
+
 
         function duplicateGetChildren(num){
             return new Promise(function(resolve) {
@@ -104,6 +111,8 @@ describe("AsyncTree", function(){
             assert.deepEqual(AsyncTree.flatten(tree.root), flatTree);
             // console.log("%j", AsyncTree.flatten(tree.root));
         });
+        /******************************End Test********************************/
+
 
         function getChildren(num){
             return new Promise(function(resolve) {
@@ -116,11 +125,12 @@ describe("AsyncTree", function(){
 
     it("work removes duplicates with string vals", function(){
         this.timeout(10000);
-        var bigArtistTree = require("./AsyncTree/bigArtistTree.json");
+        var bigArtistTree = require("./AsyncTree/bigArtistArray.json");
         return new AsyncTree("Radiohead",lastfmGetChildren, 3 ).init().then(function(tree){
             assert.deepEqual(AsyncTree.flatten(tree.root).sort(nodeSort), bigArtistTree.sort(nodeSort));
-            // console.log("%j", AsyncTree.flatten(tree.root));
         });
+
+        /******************************End Test********************************/
 
         function nodeSort(a, b){
             if(a.val < b.val){
@@ -131,7 +141,6 @@ describe("AsyncTree", function(){
                 return 0;
             }
         }
-
         function lastfmGetChildren(artist){
             return lastfm.requestPromise("artist.getSimilar",{
                 artist: artist,

@@ -2,6 +2,7 @@ var assert = require("assert")
 var expect = require("expect.js")
 var utils = require("../public/js/utils.js")
 var Graph = require("../lib/graph.js")
+var AsyncTree = require("../lib/AsyncTree.js")
 
 
 describe("utils", function() {
@@ -22,7 +23,13 @@ describe("utils", function() {
 
 describe("Server Side Graph Representation", function() {
 
-    var startNodes = [{id: "Metallica"}, {id:  "Led Zeppelin"}, {id:  "Yes"}];
+    var startNodes = [{
+        id: "Metallica"
+    }, {
+        id: "Led Zeppelin"
+    }, {
+        id: "Yes"
+    }];
     var startLinks = [{
         source: "Metallica",
         target: "Yes"
@@ -44,7 +51,13 @@ describe("Server Side Graph Representation", function() {
 
         it("creates a graph with nodes(given args)", function() {
             var graph = new Graph(startNodes, startLinks);
-            assert.deepEqual(graph.nodes, [{id: "Metallica"},{id:  "Led Zeppelin"},{id:  "Yes"}]);
+            assert.deepEqual(graph.nodes, [{
+                id: "Metallica"
+            }, {
+                id: "Led Zeppelin"
+            }, {
+                id: "Yes"
+            }]);
         });
         it("creates a graph with links(given args)", function() {
             assert.deepEqual(new Graph(startNodes, startLinks).links, [{
@@ -55,8 +68,14 @@ describe("Server Side Graph Representation", function() {
     });
 
     describe("other graph operations", function() {
-        it("#filterDuplicates", function(){
-            var nodesWithDups = [{id: "Metallica"}, {id: "Metallica"}, {id: "Metallica"}];
+        it("#filterDuplicates", function() {
+            var nodesWithDups = [{
+                id: "Metallica"
+            }, {
+                id: "Metallica"
+            }, {
+                id: "Metallica"
+            }];
             var linksWithDups = [{
                 source: "Metallica",
                 target: "Iron Maiden"
@@ -66,8 +85,13 @@ describe("Server Side Graph Representation", function() {
             }];
             var graph = new Graph(nodesWithDups, linksWithDups);
             graph.filterDuplicates();
-            assert.deepEqual(graph.nodes, [{id: "Metallica"}]);
-            assert.deepEqual(graph.links, [{source:"Metallica", target: "Iron Maiden"}])
+            assert.deepEqual(graph.nodes, [{
+                id: "Metallica"
+            }]);
+            assert.deepEqual(graph.links, [{
+                source: "Metallica",
+                target: "Iron Maiden"
+            }])
         });
 
 
@@ -88,23 +112,51 @@ describe("Server Side Graph Representation", function() {
             }];
 
             graph.newGraph("Metallica", ["Iron Maiden", "Anthrax", "Slayer", "Megadeth"]);
-            assert.deepEqual(graph.nodes, [{id: "Metallica"}, {id: "Iron Maiden"}, {id: "Anthrax"}, {id: "Slayer"}, {id: "Megadeth"}]);
+            assert.deepEqual(graph.nodes, [{
+                id: "Metallica"
+            }, {
+                id: "Iron Maiden"
+            }, {
+                id: "Anthrax"
+            }, {
+                id: "Slayer"
+            }, {
+                id: "Megadeth"
+            }]);
             assert.deepEqual(graph.links, expectedLinkValue);
         });
         describe("#addNodes", function() {
-            it("works with an array", function(){
+            it("works with an array", function() {
                 var graph = new Graph(startNodes, startLinks);
-                assert.deepEqual(graph.addNodes(["Hella", "The Mars Volta"]).nodes, [{id: "Metallica"}, {id:  "Led Zeppelin"}, {id:  "Yes"}, {id:  "Hella"}, {id:  "The Mars Volta"}]);	
+                assert.deepEqual(graph.addNodes(["Hella", "The Mars Volta"]).nodes, [{
+                    id: "Metallica"
+                }, {
+                    id: "Led Zeppelin"
+                }, {
+                    id: "Yes"
+                }, {
+                    id: "Hella"
+                }, {
+                    id: "The Mars Volta"
+                }]);
             });
-            it("works with a string", function(){
+            it("works with a string", function() {
                 var graph = new Graph(startNodes, startLinks);
-                assert.deepEqual(graph.addNodes("Hella").nodes, [{id: "Metallica"}, {id:  "Led Zeppelin"}, {id:  "Yes"}, {id:  "Hella"}]);
+                assert.deepEqual(graph.addNodes("Hella").nodes, [{
+                    id: "Metallica"
+                }, {
+                    id: "Led Zeppelin"
+                }, {
+                    id: "Yes"
+                }, {
+                    id: "Hella"
+                }]);
             });
-    	});
+        });
         it("#addLinksToNode", function() {
             var graph = new Graph(startNodes);
             graph.addLinksToNode("Metallica", ["Iron Maiden", "Anthrax", "Slayer", "Megadeth"]);
-	    assert.deepEqual(graph.links, [{
+            assert.deepEqual(graph.links, [{
                 source: "Metallica",
                 target: "Iron Maiden"
             }, {
@@ -117,6 +169,26 @@ describe("Server Side Graph Representation", function() {
                 source: "Metallica",
                 target: "Megadeth"
             }]);
-        })
-    })
-})
+        });
+
+        describe("builds a graph from an AsyncTree", function(){
+            it("works in simple case", function(){
+                var graph  = new Graph();
+                var tree = require("./AsyncTree/artistTree.json"); // prebuilt tree
+                var expectedGraph = require("./serverSideGraph/graphFromAsyncTree_simple.json");
+                graph.graphFromTree(tree);
+                var nodesAndLinks = {nodes:graph.nodes, links: graph.links};
+                assert.deepEqual(nodesAndLinks, expectedGraph);
+            });
+
+            it("works in more complex case", function() {
+                var graph =  new Graph();
+                var tree = require("./AsyncTree/bigArtistTree.json");
+                var expectedGraph = require("./serverSideGraph/graphFromAsyncTree_complex.json");
+                graph.graphFromTree(tree);
+                var nodesAndLinks = {nodes:graph.nodes, links: graph.links};
+                assert.deepEqual(nodesAndLinks, expectedGraph);
+            });
+        });
+    });
+});
