@@ -23,10 +23,12 @@ var GraphView = {
         this.simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) {
                 return d.id;
-            }).distance(5))
-            .force("charge", d3.forceManyBody().strength(-3000))
+            }).distance(100).strength(1))
+            .force("charge", d3.forceManyBody().strength(-1000))
             .force("center", d3.forceCenter(this.centerX, this.centerY))
-        this.zoom = d3.zoom().on("zoom", this.zoomed);
+        this.zoom = d3.zoom()
+            .scaleExtent([1/2,96])
+            .on("zoom", this.zoomed);
         this.svg.call(this.zoom)
 
     },
@@ -70,7 +72,7 @@ var GraphView = {
             .force("link")
             .links(this.links);
 
-        this.simulation.restart().alpha(1).alphaDecay(.005);
+        this.simulation.restart().alpha(1).alphaDecay(.01);
 
         function ticked() {
             console.log("tick");
@@ -90,7 +92,6 @@ var GraphView = {
 
             node
                 .attr("x", function(d) {
-                    console.log(d);
                     return d.x
                 })
                 .attr("y", function(d) {
