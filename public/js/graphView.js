@@ -8,17 +8,27 @@ var GraphView = {
     height: 0,
     centerX: 0,
     centerY: 0,
-    newData: function(graph){
-        this.nodes = graph.nodes;
-        this.links = graph.links;
+    color: {},
+    newData: function(graph) {
+        this.nodes = graph.nodes.map(function(a, index) {
+            a.index = index;
+            return a
+        });
+        var idsInOrder = this.nodes.map(function(a){return a.id});
+        this.links = graph.links.map(function(a){
+            a.srcIndex = idsInOrder.indexOf(a.source);
+            return a;
+        });
         this.updateView();
     },
-    init: function(){
+    init: function() {
         this.svg = d3.select("svg")
         this.width = +this.svg.attr("width");
         this.height = +this.svg.attr("height");
-        this.centerX = this.width/2;
-        this.centerY  = this.height/2;
+        this.centerX = this.width / 2;
+        this.centerY = this.height / 2;
+
+        this.color = d3.scaleOrdinal(d3.schemeCategory20);
 
         this.simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) {
@@ -27,16 +37,16 @@ var GraphView = {
             .force("charge", d3.forceManyBody().strength(-1000))
             .force("center", d3.forceCenter(this.centerX, this.centerY))
         this.zoom = d3.zoom()
-            .scaleExtent([1/2,96])
+            .scaleExtent([1 / 2, 96])
             .on("zoom", this.zoomed);
         this.svg.call(this.zoom)
 
     },
 
-    zoomed: function(){
-        d3.select(".container").attr("transform", "translate("+ d3.event.transform.x + "," + d3.event.transform.y + ")scale(" + d3.event.transform.k + ")");
+    zoomed: function() {
+        d3.select(".container").attr("transform", "translate(" + d3.event.transform.x + "," + d3.event.transform.y + ")scale(" + d3.event.transform.k + ")");
     },
-    clear: function(){
+    clear: function() {
 
     },
     update: function(artist, data) {
@@ -45,19 +55,29 @@ var GraphView = {
     },
 
     updateView: function() {
+        var that = this;
         var link = d3.select("#links")
             .selectAll("line")
             .data(this.links)
             .enter().append("line")
-            .attr("stroke-Width", function(d) {
-                return Math.sqrt(d.value);
+            .attr("stroke-width", 2)
+            .attr("stroke", function(d) {
+                return that.color(d.srcIndex);
             });
 
+        var idx = 0;
         var node = d3.select("#nodes")
             .selectAll("text")
             .data(this.nodes)
             .enter().append("text")
-            .text(function(d){return d.id;})
+            .text(function(d) {
+                return d.id;
+            })
+            .attr("fill", function(d) {
+                return that.color(d.index);
+            })
+            .attr("stroke", 'black')
+            .attr("stroke-width", .1)
 
         node.append("title").text(function(d) {
             return d.id;
@@ -75,9 +95,8 @@ var GraphView = {
         this.simulation.restart().alpha(1).alphaDecay(.01);
 
         function ticked() {
-            console.log("tick");
             link
-                .attr("x1", function(d){
+                .attr("x1", function(d) {
                     return d.source.x;
                 })
                 .attr("y1", function(d) {

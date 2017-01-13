@@ -11,7 +11,6 @@ describe("AsyncTree", function(){
 
     jsonFile.readFile(file, function(err, obj) {
         if (err) {
-            //console.log("It seems like you forgot to create keys.json. see readme for more info");
             throw err;
         }
         lastfm = new LastfmPromise({
@@ -109,7 +108,6 @@ describe("AsyncTree", function(){
         return new AsyncTree(1, getChildren, 3).init().then(function(tree) {
             var flatTree = require("./AsyncTree/flattenedTree.json");
             assert.deepEqual(AsyncTree.flatten(tree.root), flatTree);
-            // console.log("%j", AsyncTree.flatten(tree.root));
         });
         /******************************End Test********************************/
 
