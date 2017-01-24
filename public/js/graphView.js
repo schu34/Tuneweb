@@ -1,3 +1,5 @@
+/*global d3*/
+
 var GraphView = {
     nodes: [],
     links: [],
@@ -29,15 +31,18 @@ var GraphView = {
         this.centerY = this.height / 2;
 
         this.color = d3.scaleOrdinal(d3.schemeCategory20);
-
+        var that = this;
         this.simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) {
                 return d.id;
-            }).distance(100).strength(1))
-            .force("charge", d3.forceManyBody().strength(-1000))
+            }).distance(5))//.strength(1))
+            .force("charge", d3.forceManyBody().strength(-2000))
             .force("center", d3.forceCenter(this.centerX, this.centerY))
+            .force("collide", d3.forceCollide(function(d){
+                return d.id.length * 3 * (1 - that.simulation.alpha())
+            }))
         this.zoom = d3.zoom()
-            .scaleExtent([1 / 2, 96])
+            .scaleExtent([1/10, 96])
             .on("zoom", this.zoomed);
         this.svg.call(this.zoom)
 
@@ -65,8 +70,7 @@ var GraphView = {
                 return that.color(d.srcIndex);
             });
 
-        var idx = 0;
-        var node = d3.select("#nodes")
+        var label = d3.select("#nodes")
             .selectAll("text")
             .data(this.nodes)
             .enter().append("text")
@@ -76,12 +80,22 @@ var GraphView = {
             .attr("fill", function(d) {
                 return that.color(d.index);
             })
-            .attr("stroke", 'black')
-            .attr("stroke-width", .1)
+            .attr("stroke", "white")
+            .attr("stroke-width", .5)
+            .style("font-size", "1.5em")
+            .style("text-anchor", "middle")
 
-        node.append("title").text(function(d) {
+        label.append("title").text(function(d) {
             return d.id;
         });
+
+        var circle = label.append("circle")
+            .attr("fill", function(d) {
+                return that.color(d.index);
+            })
+            .attr("r", 10);
+
+
 
 
         this.simulation
@@ -109,13 +123,21 @@ var GraphView = {
                     return d.target.y;
                 });
 
-            node
+            label
                 .attr("x", function(d) {
-                    return d.x
+                    return d.x;
                 })
                 .attr("y", function(d) {
-                    return d.y
+                    return d.y;
                 });
+
+            circle
+                .attr("x", function(d){
+                    return d.x;
+                })
+                .attr("y", function(d){
+                    return d.y;
+                })
         }
     }
 };
