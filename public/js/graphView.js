@@ -36,10 +36,10 @@ var GraphView = {
             .force("link", d3.forceLink().id(function(d) {
                 return d.id;
             }).distance(5))//.strength(1))
-            .force("charge", d3.forceManyBody().strength(-2000))
+            .force("charge", d3.forceManyBody().strength(this.nodes.length/this.links.length * -1000))
             .force("center", d3.forceCenter(this.centerX, this.centerY))
             .force("collide", d3.forceCollide(function(d){
-                return d.id.length * 3 * (1 - that.simulation.alpha())
+                return d.id.length * (1 - that.simulation.alpha())
             }))
         this.zoom = d3.zoom()
             .scaleExtent([1/10, 96])
@@ -70,6 +70,17 @@ var GraphView = {
                 return that.color(d.srcIndex);
             });
 
+        var circle = d3.select("#circles")
+            .selectAll("circle")
+            .data(this.nodes)
+            .enter().append("circle")
+            .attr("r", 5)
+            .attr("stroke", "black")
+            .attr("stroke-width", 1)
+            .attr("fill", function(d) {
+                return that.color(d.index);
+            });
+
         var label = d3.select("#nodes")
             .selectAll("text")
             .data(this.nodes)
@@ -81,7 +92,7 @@ var GraphView = {
                 return that.color(d.index);
             })
             .attr("stroke", "white")
-            .attr("stroke-width", .5)
+            .attr("stroke-width", .1)
             .style("font-size", "1.5em")
             .style("text-anchor", "middle")
 
@@ -89,11 +100,7 @@ var GraphView = {
             return d.id;
         });
 
-        var circle = label.append("circle")
-            .attr("fill", function(d) {
-                return that.color(d.index);
-            })
-            .attr("r", 10);
+
 
 
 
@@ -106,7 +113,11 @@ var GraphView = {
             .force("link")
             .links(this.links);
 
-        this.simulation.restart().alpha(1).alphaDecay(.01);
+        this.simulation
+            .force("charge")
+            .strength((Math.pow(this.nodes.length, 1/10) / Math.pow(this.links.length, 1/10)) * -2000)
+
+        this.simulation.restart().alpha(1).alphaDecay(.03);
 
         function ticked() {
             link
@@ -123,21 +134,23 @@ var GraphView = {
                     return d.target.y;
                 });
 
+            circle
+                .attr("cx", function(d){
+                    return d.x;
+                })
+                .attr("cy", function(d){
+                    return d.y;
+                })
+
             label
                 .attr("x", function(d) {
                     return d.x;
                 })
                 .attr("y", function(d) {
-                    return d.y;
+                    return d.y - 10;
                 });
 
-            circle
-                .attr("x", function(d){
-                    return d.x;
-                })
-                .attr("y", function(d){
-                    return d.y;
-                })
+
         }
     }
 };
