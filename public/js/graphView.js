@@ -1,3 +1,5 @@
+/*global d3*/
+
 var GraphView = {
     nodes: [],
     links: [],
@@ -8,33 +10,48 @@ var GraphView = {
     height: 0,
     centerX: 0,
     centerY: 0,
-    newData: function(graph){
-        this.nodes = graph.nodes;
-        this.links = graph.links;
+    color: {},
+    newData: function(graph) {
+        this.nodes = graph.nodes.map(function(a, index) {
+            a.index = index;
+            return a
+        });
+        var idsInOrder = this.nodes.map(function(a){return a.id});
+        this.links = graph.links.map(function(a){
+            a.srcIndex = idsInOrder.indexOf(a.source);
+            return a;
+        });
         this.updateView();
     },
-    init: function(){
+    init: function() {
         this.svg = d3.select("svg")
         this.width = +this.svg.attr("width");
         this.height = +this.svg.attr("height");
-        this.centerX = this.width/2;
-        this.centerY  = this.height/2;
+        this.centerX = this.width / 2;
+        this.centerY = this.height / 2;
 
+        this.color = d3.scaleOrdinal(d3.schemeCategory20);
+        var that = this;
         this.simulation = d3.forceSimulation()
             .force("link", d3.forceLink().id(function(d) {
                 return d.id;
-            }).distance(5))
-            .force("charge", d3.forceManyBody().strength(-3000))
+            }).distance(5))//.strength(1))
+            .force("charge", d3.forceManyBody().strength(this.nodes.length/this.links.length * -1000))
             .force("center", d3.forceCenter(this.centerX, this.centerY))
-        this.zoom = d3.zoom().on("zoom", this.zoomed);
+            .force("collide", d3.forceCollide(function(d){
+                return d.id.length * (1 - that.simulation.alpha())
+            }))
+        this.zoom = d3.zoom()
+            .scaleExtent([1/10, 96])
+            .on("zoom", this.zoomed);
         this.svg.call(this.zoom)
 
     },
 
-    zoomed: function(){
-        d3.select(".container").attr("transform", "translate("+ d3.event.transform.x + "," + d3.event.transform.y + ")scale(" + d3.event.transform.k + ")");
+    zoomed: function() {
+        d3.select(".container").attr("transform", "translate(" + d3.event.transform.x + "," + d3.event.transform.y + ")scale(" + d3.event.transform.k + ")");
     },
-    clear: function(){
+    clear: function() {
 
     },
     update: function(artist, data) {
@@ -43,23 +60,49 @@ var GraphView = {
     },
 
     updateView: function() {
+        var that = this;
         var link = d3.select("#links")
             .selectAll("line")
             .data(this.links)
             .enter().append("line")
-            .attr("stroke-Width", function(d) {
-                return Math.sqrt(d.value);
+            .attr("stroke-width", 2)
+            .attr("stroke", function(d) {
+                return that.color(d.srcIndex);
             });
 
-        var node = d3.select("#nodes")
+        var circle = d3.select("#circles")
+            .selectAll("circle")
+            .data(this.nodes)
+            .enter().append("circle")
+            .attr("r", 5)
+            .attr("stroke", "black")
+            .attr("stroke-width", 1)
+            .attr("fill", function(d) {
+                return that.color(d.index);
+            });
+
+        var label = d3.select("#nodes")
             .selectAll("text")
             .data(this.nodes)
             .enter().append("text")
-            .text(function(d){return d.id;})
+            .text(function(d) {
+                return d.id;
+            })
+            .attr("fill", function(d) {
+                return that.color(d.index);
+            })
+            .attr("stroke", "white")
+            .attr("stroke-width", .1)
+            .style("font-size", "1.5em")
+            .style("text-anchor", "middle")
 
-        node.append("title").text(function(d) {
+        label.append("title").text(function(d) {
             return d.id;
         });
+
+
+
+
 
 
         this.simulation
@@ -70,12 +113,15 @@ var GraphView = {
             .force("link")
             .links(this.links);
 
-        this.simulation.restart().alpha(1).alphaDecay(.005);
+        this.simulation
+            .force("charge")
+            .strength((Math.pow(this.nodes.length, 1/10) / Math.pow(this.links.length, 1/10)) * -2000)
+
+        this.simulation.restart().alpha(1).alphaDecay(.03);
 
         function ticked() {
-            console.log("tick");
             link
-                .attr("x1", function(d){
+                .attr("x1", function(d) {
                     return d.source.x;
                 })
                 .attr("y1", function(d) {
@@ -88,14 +134,23 @@ var GraphView = {
                     return d.target.y;
                 });
 
-            node
+            circle
+                .attr("cx", function(d){
+                    return d.x;
+                })
+                .attr("cy", function(d){
+                    return d.y;
+                })
+
+            label
                 .attr("x", function(d) {
-                    console.log(d);
-                    return d.x
+                    return d.x;
                 })
                 .attr("y", function(d) {
-                    return d.y
+                    return d.y - 10;
                 });
+
+
         }
     }
 };

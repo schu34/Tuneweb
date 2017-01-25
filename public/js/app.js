@@ -1,3 +1,4 @@
+/*global $, GraphView, utils*/
 var numResults = 5; //number of results this needs to be user setable
 
 //gets called each time there is a search
@@ -8,6 +9,7 @@ var explore = function() {
     query.artist = utils.titleCase(query.artist);
     $(".artist").val("");
     $(".center .artist").val("");
+
 
     if (query.artist.length > 0)
         fetchRelated(query, function(graph) {
@@ -20,7 +22,7 @@ var explore = function() {
 };
 //request related artists from the server
 var fetchRelated = function(query, callback) {
-    $.post('/artist', query, function(data) {
+    $.getJSON('/artist', query, function(data) {
         console.log(data);
         callback(data);
     });
