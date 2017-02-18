@@ -1,6 +1,40 @@
 <!DOCTYPE html>
 <html>
-<body>
-    This app was made by Matthew Schupack, because he was tired of it not existing.
-</body>
+    <head>
+        <title>Tuneweb|About</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+        <!-- begin navbar -->
+        <nav class="navbar navbar-default navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="index.html" class="navbar-brand">Tuneweb</a>
+                </div>
+
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#">about</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- end navbar -->
+        <div class="container">
+            <h1>What is This?</h1>
+            <p>Tuneweb is an app to help you discover new music. When you type the name of a band or musician into the search bar, it will show you a map of related artists. If a line connects two artists, it means they are directly related </p>
+            <h1>How does it work?</h1>
+            <p>When you click the "explore" button, the name of the band you typed in gets sent to a server. The server queries last.fm for the top 5 artists related to what you typed in, then for each of those 5 artists, does the same thing. Now we have a fetched a total of 30 artists, but it's pretty likely that we have some duplicates. The server goes through and removes duplicates from the list, but preserves the relationships between bands. once duplicates have been removed, the server sends the data back to your browser where d3.js is used to create the beautiful visualization. If you're interested in all the nitty gritty details you can check out the <a href="https://github.com/schu34/Tuneweb">source on github </a> </p>
+            <h1>Controls</h1>
+            <h3>Desktop</h3>
+            <p>Click and Drag: move <br>
+               Scroll: Zoom in/out </p>
+            <h3>Mobile</h3>
+            <p> drag: move <br>
+                2 finger pinch: zoom</p>
+        </div>
+    </body>
 </html>
