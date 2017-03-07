@@ -1,6 +1,8 @@
 body {
     padding: 30px;
     font-family: sans-serif;
+    height: 100%;
+    overflow-y: hidden;
 }
 
 
@@ -38,7 +40,7 @@ svg{
 
 #svg-container{
     width: 100vw;
-    height: 100vh;
+    /*height: 100vh;*/
     float: left;
 }
 
