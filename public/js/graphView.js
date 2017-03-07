@@ -49,7 +49,10 @@ var GraphView = {
     },
 
     zoomed: function() {
-        d3.select(".container").attr("transform", "translate(" + d3.event.transform.x + "," + d3.event.transform.y + ")scale(" + d3.event.transform.k + ")");
+        d3.select(".container").attr("transform", "translate(" +
+                                                  d3.event.transform.x + "," +
+                                                  d3.event.transform.y +
+                                                  ")scale(" + d3.event.transform.k + ")");
     },
     clear: function() {
 
