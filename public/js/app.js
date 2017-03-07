@@ -1,5 +1,4 @@
 /*global $, GraphView, utils*/
-var numResults = 5; //number of results this needs to be user setable
 
 //gets called each time there is a search
 var explore = function() {
@@ -13,10 +12,7 @@ var explore = function() {
 
     if (query.artist.length > 0)
         fetchRelated(query, function(graph) {
-            console.log(graph);
-            // graph.update(query.artist, artists);
             GraphView.newData(graph);
-            // GraphView.updateView();
             transition();
         });
 };
@@ -24,7 +20,11 @@ var explore = function() {
 var fetchRelated = function(query, callback) {
     $.getJSON('/artist', query, function(data) {
         console.log(data);
-        callback(data);
+        if(data.err){
+            alert(data.err.message);
+        } else {
+            callback(data);
+        }
     });
 };
 
@@ -34,10 +34,6 @@ var transition = function() {
     $(".center").fadeOut('slow');
 
     $("svg").fadeIn('slow');
-
-    $('html, body').animate({
-        scrollTop: $("#svg-container").offset().top
-    }, 500);
 
     $(".top-search").fadeIn('slow');
 };
