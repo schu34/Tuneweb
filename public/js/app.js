@@ -19,7 +19,6 @@ var explore = function() {
 //request related artists from the server
 var fetchRelated = function(query, callback) {
     $.getJSON('/artist', query, function(data) {
-        console.log(data);
         if(data.err){
             alert(data.err.message);
         } else {
