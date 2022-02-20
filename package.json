@@ -4,25 +4,25 @@
   "description": "discover new music",
   "main": "server.js",
   "dependencies": {
-    "apicache": "^0.8.3",
+    "apicache": "^1.6.3",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "jsonfile": "^2.4.0",
-    "lastfm": "^0.9.2",
+    "lastfm": "^0.9.0",
     "lodash.isequal": "^4.4.0",
     "lodash.uniq": "^4.5.0",
     "lodash.uniqwith": "^4.5.0",
-    "node-rest-client": "^2.0.1",
-    "rediscache": "^1.0.0"
+    "node-rest-client": "^3.1.1",
+    "rediscache": "^0.2.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "deep-eql": "^2.0.1",
     "expect.js": "^0.3.1",
-    "gulp": "^3.9.1",
-    "gulp-develop-server": "^0.5.2",
-    "mocha": "^3.1.2"
+    "gulp": "^4.0.2",
+    "gulp-develop-server": "^0.2.5",
+    "mocha": "^9.2.1"
   },
   "scripts": {
     "test": "mocha",
